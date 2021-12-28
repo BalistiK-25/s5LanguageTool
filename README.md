@@ -82,8 +82,7 @@ LanguageTool.Message({
 -- If the language with the id "de" is selected, "Beispieltext für de" will be displayed.
 -- If the language with the id "en" is selected, "Example text for en" will be displayed.
 -- If the language with the id "pl" is selected, "Przykładowy tekst dla pl" will be displayed.
--- Since no key is set for the id "fr", if "fr" would be the selected language an error message would be displayed saying "LanguageTool: No key was found for the
--- selected language with the key "fr" "
+-- Since no key is set for the id "fr", if "fr" would be the selected language an error message would be displayed saying "LanguageTool: No key was found for the selected language with the key "fr" "
 
 LanguageTool.Message({
     en = "Example text for en",
@@ -93,3 +92,54 @@ LanguageTool.Message({
 ```
 
 As you can see, the original "Message" function was not used in the example, but the "Message" function of the LanguageTool. All functions have been replaced by separate functions of the LanguageTool, like LanguageTool.Briefing, LanguageTool.Message or LanguageTool.StartCutscene. On one hand, this serves to prevent errors,  on the other hand, it also makes it possible to safely overwrite functions such as StartBriefing at any time without coming into conflict with the LanguageTool itself.
+
+Since briefings are a more complex topic, they are presented below in an additional example. Suppose we have the following briefing, which we call with the function LanguageTool.StartBriefing:
+```
+local briefing = {}
+
+table.insert(briefing, {
+    title       = "Totally viable title",
+    text        = "Totally viable text",
+    position    = GetPosition("position")
+})
+
+LanguageTool.StartBriefing(briefing)
+```
+In this example, all selected languages would display title and text in the same way. Suppose we want to display a different text for the language "de", "en" and "pl". We would solve this as follows:
+```
+local briefing = {}
+
+table.insert(briefing, {
+    title       = "Totally viable title",
+    text        = {
+        de = "Vollkommen brauchbarer Text",
+        en = "Totally viable text",
+        pl = "Tekst całkowicie wykonalny"
+    },
+    position    = GetPosition("position")
+})
+
+LanguageTool.StartBriefing(briefing)
+```
+For the languages with the id "de", "en" and "pl" we would now display different texts. For the language "fr" we would get an error message as text. However, all languages would still display the same title: "Totally viable title". For the next step, we therefore want to give the languages "de" and "en" the same title and "pl" a different one:
+```
+local briefing = {}
+
+table.insert(briefing, {
+    title       = {
+        shared = "Totally viable title"
+        pl = "Całkowicie realny tytuł" 
+    },
+    text        = {
+        de = "Vollkommen brauchbarer Text",
+        en = "Totally viable text",
+        pl = "Tekst całkowicie wykonalny"
+    },
+    position    = GetPosition("position")
+})
+
+LanguageTool.StartBriefing(briefing)
+```
+Now we would have the same title for "de" and "en" (and also "fr") and our own title for "pl". For "de", "en" and "pl" we would therefore have a different text and for "fr" an error message as text.
+
+It is important to note that the id of each language must be identical to the key of the table.
