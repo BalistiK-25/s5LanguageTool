@@ -1,22 +1,22 @@
 # s5_LanguageTool
-## Inhaltsverzeichnis
-* [Warum ein language tool](#warum-ein-language-tool)
-* [Hinzufügen von Sprachen und anzeigen des Sprachselektors](#hinzufügen-von-sprachen-und-anzeigen-des-sprachselektors)
+## Table of contents
+* [Why a language tool](#why-a-language-tool)
+* [Including Supported Languages](#including-supported-languages)
 * [Briefings und co](#briefings-und-co)
 
-## Warum ein language tool
+## Why a language tool
 
-Freispiel- und Kampagnenkarten sind von den Entwicklern so erstellt worden, dass diese in mehreren Sprachen angeboten werden können. Dafür bedient sich z.B. ein Briefing einer XML-Datei, die sich in einem Ordner mit der jeweiligen Sprachversion des Spiels befindet (Bei Nutzung des deutschen Sprachpaketes, liegt die XML-Datei dafür in dem Ordner „\extra2\shr\text\de\InGame“).
+Free-play and campaign maps have been created by the developers in such a way that they can be offered in several languages. For this purpose, a briefing, for example, uses an XML file that is located in a folder with the respective language version of the game (when using the German language package, the XML file for this is located in the folder ("\extra2\shr\text\de\InGame").
 
-Nun ist diese Möglichkeit, Strings aus einer XML-Datei zu laden, leider auch nur auf die vorinstallierten Karten so möglich. Map-Ersteller können von ihrer Karte her nicht auf eine XML-Datei zugreifen, geschweige denn auf eine andere Datei außer LUA-Dateien (was auch gut so ist). Dies macht es aber sehr aufwendig, eigene Karten in mehreren Sprachen anzubieten.
-Dieses Tool hier soll dies jedoch erleichtern, beziehungsweise ein Gerüst bereitstelle, welches man nutzen kann:
+Unfortunately, this possibility of loading strings from an XML file is only possible for preinstalled maps. Map creators cannot access an XML file from their map, let alone any other file except LUA files (which is a good thing). However, this makes it very time-consuming to offer one's own maps in several languages.
+However, this tool is intended to make this easier, or to provide a framework that can be used:
 
-* In einem Fenster wird die Sprachauswahl angezeigt, die diese Karte unterstützt. Das Spiel wird dafür auch pausiert, damit die Auswahl der Sprache nicht versehentlich die Abläufe der Karte hindert.
-* Jegliche Funktionen, die eben mehrsprachig sein sollen, können über das Tool als mehrsprachig angeboten werden.
-* Umlaute oder besondere Zeichen, die es in vielen Sprachen gibt, werden automatisch in UTF-8 konvertiert. (Siehe Einbinden von unterstützten Sprachen)
-* Briefings, Messages und Co. müssen wenig angepasst werden, um mehrere Sprachen gleichzeitig zu unterstützen.
+* A window displays the language selection that this map supports. The game is also paused for this purpose so that the language selection does not inadvertently hinder the map's operations.
+* Any functions that are to be multilingual can be offered as multilingual via the tool.
+* Special characters that exist in many languages are automatically converted to UTF-8. (See [Including Supported Languages](#including-supported-languages))
+* Briefings, messages and the like need little adaptation to support several languages at the same time.
 
-## Hinzufügen von Sprachen und anzeigen des Sprachselektors
+## Including Supported Languages
 
 Wenn man das LanguageTool als Comfort in seine Karte kopiert hat, wird zuerst nichts weiteres passieren. Über den folgenden Aufruf kann man das Fenster anzeigen (am Besten als Aufruf in der FMA). So lange das Fenster angezeigt wird, ist das Spiel pausiert
 `LanguageTool.DisplayLanguageSelection(state, callback, parameters)`
