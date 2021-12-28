@@ -1,4 +1,6 @@
 # s5_LanguageTool
+The whole LanguageTool is documented with Emmy Annotation. If you use Visual Studio Code, for example, you can download the lua-extension by sumneko which includes Emmy Annotation support.
+
 ## Table of contents
 * [Why a language tool](#why-a-language-tool)
 * [Including Supported Languages](#including-supported-languages)
