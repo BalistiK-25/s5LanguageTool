@@ -417,6 +417,8 @@ function LanguageTool:__Show()
     self.isActive = true
 
     Game.GameTimeSetFactor(0)
+    Stream.Pause(true)
+    Sound.Pause3D(true)
 
     Camera.ScrollSetLookAt(-1, -1)
     Camera.SetControlMode(1)
@@ -440,4 +442,6 @@ function LanguageTool:__Hide()
     Camera.SetControlMode(0)
 
     Game.GameTimeSetFactor(1)
+    Stream.Pause(false)
+    Sound.Pause3D(false)
 end
