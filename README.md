@@ -25,7 +25,6 @@ However, this tool is intended to make this easier, or to provide a framework th
 * Briefings, messages and the like need little adaptation to support several languages at the same time.
 
 This is how the language-selector will look like:
-![grafik](https://user-images.githubusercontent.com/96784459/147613826-c6c92483-306f-4cdb-b183-2a5fedc89f37.png)
 
 ## Including Supported Languages
 
