@@ -271,22 +271,29 @@ function LanguageTool.AddTribute(_tribute)
     end
 end
 
---- Returns the correct string of a given table by the chosen language-id.
+--- Returns the correct string of a given table by the chosen language-id or an error message, if no key could be found.
 --- The table should follow this style:
 --- {
----    shared  = "Text for all id that are not listed in this table"
+---    shared  = "Text for all id that are not listed in this table (may be optional)"
 ---    langID1 = "Text for langID1",
 ---    langID2 = "Text for langID2"
 --- }
---- @param _table table The table to look for.
---- @return string
-function LanguageTool:GetString(_table)
+--- @param _table table             The table to look for.
+--- @param _returnInput boolean     (optional) boolean If the input should be returned, if no key was found
+--- @return string any              A error-string or the input
+function LanguageTool:GetString(_table, _returnInput)
+    _returnInput = _returnInput or false
+
     if _table ~= nil and type(_table) == "table" and self.chosenLanguage ~= nil then
         if _table[self.chosenLanguage.id] ~= nil then
             return LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)
         elseif _table.shared ~= nil then
             return LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)
         end
+    end
+
+    if _returnInput then
+        return _table
     end
 
     return string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))
@@ -300,8 +307,8 @@ end
 --- @param _title string         The title that should be displayed. 
 --- @param _characterSet table   The characterset of the language. The table follows this structure: 
 ---                             {
----                                 {"specialCharacter", "unicode"},
----                                 {"specialCharacter", "unicode"}, 
+---                                 {"specialCharacter", "UTF-8 Code"},
+---                                 {"specialCharacter", "UTF-8 Code"}, 
 ---                                                   ...
 ---                             }
 function LanguageTool.AddToLanguageSelection(_id, _name, _title, _characterSet)
