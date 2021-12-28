@@ -3,10 +3,14 @@ The whole LanguageTool is documented with Emmy Annotation. If you use Visual Stu
 
 The LanguageTool is quite large too (also because of this Emmy annotation) and covers a vast amount of functions for multilingual support (It very well may be that it still misses some functions!) It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
 
+Furthermore, the calls of LanguageTool.StartCutscene or LanguageTool.AddTribute may only work if you have the correct Comfort-Functions in your script. Otherwise nothing will happen.
+
 ## Table of contents
 * [Why a language tool](#why-a-language-tool)
 * [Including Supported Languages](#including-supported-languages)
-* [Briefings and such](#briefings-and-such)
+* [General Pattern](#general-Pattern)
+* [Briefings and Cutscenes](#briefings-and-cutscenes)
+* [Adding your own multilingual function](#adding-your-own-multilingual-function)
 
 ## Why a language tool
 
@@ -53,7 +57,7 @@ The special characters are specified with their UTF-8 code, which allows them to
 
 It is important to **first** add the languages to the LanguageTool **before** displaying the selector.
 
-## Briefings and such
+## General Pattern
 
 If the LanguageTool has been successfully initialised and several languages have been added, the briefings, messages, cutscenes, etc... must be adapted. Basically, all multilingual text outputs are built on the same pattern: Each function that origninally receives a string, that should output in multiple languages, can either receive a string or a table (with a certain pattern). Let's take the regular "Message"-Function. The LanguageTool decides as follows:
 
@@ -93,7 +97,9 @@ LanguageTool.Message({
 
 As you can see, the original "Message" function was not used in the example, but the "Message" function of the LanguageTool. All functions have been replaced by separate functions of the LanguageTool, like LanguageTool.Briefing, LanguageTool.Message or LanguageTool.StartCutscene. On one hand, this serves to prevent errors,  on the other hand, it also makes it possible to safely overwrite functions such as StartBriefing at any time without coming into conflict with the LanguageTool itself.
 
-Since briefings are a more complex topic, they are presented below in an additional example. Suppose we have the following briefing, which we call with the function LanguageTool.StartBriefing:
+## Briefings and Cutscenes
+
+Since briefings (and cutscenes) are a more complex topic, they are presented below in an additional example. The cutscene text and title work the same way as the example of the briefing. Suppose we have the following briefing, which we call with the function LanguageTool.StartBriefing:
 ```
 local briefing = {}
 
@@ -140,6 +146,56 @@ table.insert(briefing, {
 
 LanguageTool.StartBriefing(briefing)
 ```
-Now we would have the same title for "de" and "en" (and also "fr") and our own title for "pl". For "de", "en" and "pl" we would therefore have a different text and for "fr" an error message as text.
+Now we would have the same title for "de" and "en" (and also "fr") and our own title for "pl".  
+For "de", "en" and "pl" we would therefore have a different text and for "fr" an error message as text.
 
-It is important to note that the id of each language must be identical to the key of the table.
+It is also very important to **replace the call StartBriefing to LanguageTool.StartBriefing before adjusting the briefing pages**. Otherwise you will quickly run into an error that can only be solved by Alt+F4 the game.
+
+If we want to create multiple-choice briefings we must replace the firstText and secondText of the mc-table with the same principle as shown below:
+```
+    ...
+mc   = {
+    title = "Title for everyone",
+    text = "Text for everyone",
+    firstText = {
+        de   = "Erster Text für de",
+        en   = "First text for en",
+        pl   = "Pierwszy tekst do pl"
+    },
+    secondText = {
+        de  = "Zweiter Text für de",
+        en  = "Second text for en",
+        pl  = "Drugi tekst do de"
+    },
+    firstSelected  = 2,
+    secondSelected = 4,
+},
+    ...
+```
+
+The concept stays the same across all functions that may take text that should be multilingual. Here is the full list of all functions implemented in the LanguageTool:
+* LanguageTool.Message
+* LanguageTool.StartBriefing
+* LanguageTool.StartCutscene (requires comfort-function)
+* LanguageTool.SetPlayerName
+* LanguageTool.CreateNPC
+* LanguageTool.AddQuest
+* LanguageTool.AddTribute (requires comfort-function)
+
+## Adding your own multilingual function
+
+If there is a need to write a separate function to display multilingual text, the function `LanguageTool:GetString(_table, _returnInput)` can be called.
+This is the main function to find the correct keys from a table (as set throughout the examples above). Important to note, if no matching key is found, `_returnInput` (a boolean) can be used to specify whether an error message should be returned or the input itself.
+```
+-- Your own function that does something with the text that should be multilingual
+function Test(_text)
+    doSomethingWithTheText(_text)
+end
+
+function LanguageTool.Test(_table)
+    _table = LanguageTool:GetString(_table) -- will always return a string
+    _table = LanguageTool:GetString(_table, true) -- will either return the correct string or _table
+    
+    Test(_table)
+end
+```
