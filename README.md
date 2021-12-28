@@ -1,8 +1,8 @@
 # s5_LanguageTool
 ## Inhaltsverzeichnis
 * [Warum ein language tool](#warum-ein-language-tool)
-* [Technologies](#technologies)
-* [Setup](#setup)
+* [Hinzufügen von Sprachen und anzeigen des Sprachselektors](#hinzufügen-von-sprachen-und-anzeigen-des-sprachselektors)
+* [Briefings und co](#briefings und co)
 
 ## Warum ein language tool
 -----------
@@ -17,7 +17,7 @@ Dieses Tool hier soll dies jedoch erleichtern, beziehungsweise ein Gerüst berei
 * Umlaute oder besondere Zeichen, die es in vielen Sprachen gibt, werden automatisch in UTF-8 konvertiert. (Siehe Einbinden von unterstützten Sprachen)
 * Briefings, Messages und Co. müssen wenig angepasst werden, um mehrere Sprachen gleichzeitig zu unterstützen.
 
-Hinzufügen von Sprachen und anzeigen des Sprachselektors
+## Hinzufügen von Sprachen und anzeigen des Sprachselektors
 -----------
 
 Wenn man das LanguageTool als Comfort in seine Karte kopiert hat, wird zuerst nichts weiteres passieren. Über den folgenden Aufruf kann man das Fenster anzeigen (am Besten als Aufruf in der FMA). So lange das Fenster angezeigt wird, ist das Spiel pausiert
@@ -52,6 +52,6 @@ LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsc
 Wichtig ist, dass man **erst** die Sprachen dem LanguageTool hinzufügt, bevor man das Fenster anzeigt.
 
 
-Erstellen von Multi-Sprachen Funktionen
+## Briefings und co
 -----------
 
