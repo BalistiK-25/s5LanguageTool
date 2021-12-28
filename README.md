@@ -19,23 +19,32 @@ Hinzufügen von Sprachen und anzeigen des Sprachselektors
 Wenn man das LanguageTool als Comfort in seine Karte kopiert hat, wird zuerst nichts weiteres passieren. Über den folgenden Aufruf kann man das Fenster anzeigen (am Besten als Aufruf in der FMA). So lange das Fenster angezeigt wird, ist das Spiel pausiert
 `LanguageTool.DisplayLanguageSelection(state, callback, parameters)`
 
-`state` (number) = ob das Fenster angezeigt werden soll oder nicht. 0 = unsichtbar, 1 = sichtbar.
+`state` (number) = optional, ob das Fenster angezeigt werden soll oder nicht. 0 = unsichtbar, 1 = sichtbar.
 
-`callback` (function) = die Funktion, die nach Bestätigung der Sprachauswahl aufgerufen wird.
+`callback` (function) = optional, die Funktion, die nach Bestätigung der Sprachauswahl aufgerufen wird.
 
-`parameters` (table) = die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
+`parameters` (table) = optional, die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
 
 
 Dieses Fenster ist allerdings zwecklos, da man keine Sprache auswählen kann.
 Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefügt werden. Sinn und Zweck ist, dass der Mapentwickler selbst festlegen soll, welche Sprachen er unterstützt. Daher müssen diese über die folgende Funktion hinzugefügt werden:
 
 `LanguageTool.AddToLanguageSelection(id, name, title, charset)`
-`id` (string) = ob das Fenster angezeigt werden soll oder nicht. 0 = unsichtbar, 1 = sichtbar.
+`id` (string) = die einteudige ID der Sprache. (Empfolen ist der Sprachkürzel nach ISO 639-1)
 
-`name` (string) = die Funktion, die nach Bestätigung der Sprachauswahl aufgerufen wird.
+`name` (string) = der Name der Sprache (am Besten in der Muttersprache, z.B. Deutsch, English, Polski, ...)
 
-`title` (string) = die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
+`title` (string) = der Titel, der am oberen Fenster angezeigt wird, wenn die Sprache angewählt wird.
 
-`charset` (table) = die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
+`charset` (table) = (optional) das Charset stellt die Sonderzeichen der jeweiligen Sprache dar. Das charset wird dafür genutzt, diese Sonderzeichen in den Texten in Unicode zu konvertieren.
 
-Test
+So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:
+`LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
+    {"ä", "\195\164"},
+    {"ö", "\195\182"},
+    {"ü", "\195\188"},
+    {"ß", "\195\159"},
+    {"Ä", "\195\132"},
+    {"Ö", "\195\150"},
+    {"Ü", "\195\156"}
+})`
