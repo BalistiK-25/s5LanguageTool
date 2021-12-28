@@ -66,11 +66,13 @@ Als Beispiel wird angenommen, dass das LanguageTool mit den Sprachen "de", "en",
 
 ```
 -- Every selected language will display "Example Text"
+
 LanguageTool.Message("Example Text") 
 
 -- Every selected language, except with the id "de" and "en", will display "Example text for shared".
 -- If the language with the id "de" is selected, "Beispieltext für de" will be displayed.
 -- If the language with the id "en" is selected, "Example text for en" will be displayed.
+
 LanguageTool.Message({
     shared = "Example text for shared",
     de = "Beispieltext für de",
@@ -81,8 +83,8 @@ LanguageTool.Message({
 -- If the language with the id "en" is selected, "Example text for en" will be displayed.
 -- If the language with the id "pl" is selected, "Przykładowy tekst dla pl" will be displayed.
 -- Since no key is set for the id "fr", if "fr" would be the selected language an error message would be displayed saying "LanguageTool: No key was found for the
-
 -- selected language with the key "fr" "
+
 LanguageTool.Message({
     en = "Example text for en",
     de = "Beispieltext für de",
