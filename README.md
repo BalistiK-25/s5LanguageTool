@@ -40,11 +40,19 @@ Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefü
 
 So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:
 `LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
+
     {"ä", "\195\164"},
+    
     {"ö", "\195\182"},
+    
     {"ü", "\195\188"},
+    
     {"ß", "\195\159"},
+    
     {"Ä", "\195\132"},
+    
     {"Ö", "\195\150"},
+    
     {"Ü", "\195\156"}
+    
 })`
