@@ -1,6 +1,10 @@
 # s5_LanguageTool
+## Inhaltsverzeichnis
+* [Warum ein language tool](#warum-ein-language-tool)
+* [Technologies](#technologies)
+* [Setup](#setup)
 
-Warum ein "language tool"?
+## Warum ein language tool
 -----------
 
 Freispiel- und Kampagnenkarten sind von den Entwicklern so erstellt worden, dass diese in mehreren Sprachen angeboten werden können. Dafür bedient sich z.B. ein Briefing einer XML-Datei, die sich in einem Ordner mit der jeweiligen Sprachversion des Spiels befindet (Bei Nutzung des deutschen Sprachpaketes, liegt die XML-Datei dafür in dem Ordner „\extra2\shr\text\de\InGame“).
@@ -33,7 +37,8 @@ Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefü
 * `charset` (table) = (optional) das Charset stellt die Sonderzeichen der jeweiligen Sprache dar. Das charset wird dafür genutzt, diese Sonderzeichen in den Texten in UTF-8 zu konvertieren. Da zum Beispiel Siedler in Briefings Probleme hat Umlaute anzuzeigen, müssten diese in den Briefings durch UTF-8 durch z.B. eine Umlaute-Funktion ersetzt werden. Dies wird eben durch dieses angegebene Tool automatisch erstezt, je nach angegebenen charset.
 
 So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:  
-`LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
+```
+LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
     {"ä", "\195\164"},
     {"ö", "\195\182"},
     {"ü", "\195\188"},
@@ -41,7 +46,8 @@ So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:
     {"Ä", "\195\132"},
     {"Ö", "\195\150"},
     {"Ü", "\195\156"}
-})`
+})
+```
 
 Wichtig ist, dass man **erst** die Sprachen dem LanguageTool hinzufügt, bevor man das Fenster anzeigt.
 
