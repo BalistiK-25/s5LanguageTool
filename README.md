@@ -5,7 +5,6 @@
 * [Briefings und co](#briefings-und-co)
 
 ## Warum ein language tool
------------
 
 Freispiel- und Kampagnenkarten sind von den Entwicklern so erstellt worden, dass diese in mehreren Sprachen angeboten werden können. Dafür bedient sich z.B. ein Briefing einer XML-Datei, die sich in einem Ordner mit der jeweiligen Sprachversion des Spiels befindet (Bei Nutzung des deutschen Sprachpaketes, liegt die XML-Datei dafür in dem Ordner „\extra2\shr\text\de\InGame“).
 
@@ -18,7 +17,6 @@ Dieses Tool hier soll dies jedoch erleichtern, beziehungsweise ein Gerüst berei
 * Briefings, Messages und Co. müssen wenig angepasst werden, um mehrere Sprachen gleichzeitig zu unterstützen.
 
 ## Hinzufügen von Sprachen und anzeigen des Sprachselektors
------------
 
 Wenn man das LanguageTool als Comfort in seine Karte kopiert hat, wird zuerst nichts weiteres passieren. Über den folgenden Aufruf kann man das Fenster anzeigen (am Besten als Aufruf in der FMA). So lange das Fenster angezeigt wird, ist das Spiel pausiert
 `LanguageTool.DisplayLanguageSelection(state, callback, parameters)`
@@ -53,5 +51,4 @@ Wichtig ist, dass man **erst** die Sprachen dem LanguageTool hinzufügt, bevor m
 
 
 ## Briefings und co
------------
 
