@@ -1,8 +1,7 @@
 # s5_LanguageTool
 The whole LanguageTool is documented with Emmy Annotation. If you use Visual Studio Code, for example, you can download the lua-extension by sumneko which includes Emmy Annotation support.
 
-The LanguageTool is quite large too (also because of this Emmy annotation) and covers a vast amount of functions for multilingual support (It very well may be that it still misses some functions!) 
-It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
+The LanguageTool is quite large too (also because of this Emmy annotation) and covers a vast amount of functions for multilingual support (It very well may be that it still misses some functions!) It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
 
 ## Table of contents
 * [Why a language tool](#why-a-language-tool)
@@ -11,7 +10,7 @@ It also very well be that this LanguageTool might be a little bit of an **overki
 
 ## Why a language tool
 
-Free-play and campaign maps have been created by the developers in such a way that they can be offered in several languages. For this purpose, a briefing, for example, uses an XML file that is located in a folder with the respective language version of the game (when using the German language package, the XML file for this is located in the folder ("\extra2\shr\text\de\InGame").
+Free-play and campaign maps have been created by the developers in such a way that they can be offered in several languages. For this purpose, a briefing, for example, uses an XML file that is located in a folder with the respective language version of the game (when using the German language package, the XML file for this is located in the folder "\extra2\shr\text\de\InGame").
 
 Unfortunately, this possibility of loading strings from an XML file is only possible for preinstalled maps. Map creators cannot access an XML file from their map, let alone any other file except LUA files (which is a good thing). However, this makes it very time-consuming to offer one's own maps in several languages.
 However, this tool is intended to make this easier, or to provide a framework that can be used:
@@ -55,4 +54,12 @@ The special characters are specified with their UTF-8 code, which allows them to
 It is important to **first** add the languages to the LanguageTool **before** displaying the selector.
 
 ## Briefings and such
+
+Nachdem das LanguageTool nun erfolgreich initalisiert wurde und mehrere Sprachen hinzugefügt wurden, müssen weiterführend die Briefings, Messages, Cutscenes, etc... angepasst werden. Im Grunde sind alle mehrsprachigen Textausgaben auf dem gleichen Muster aufgebaut: Jede Funktion, die einen string entgegennimmt der mehrsprachig ausgegeben werden soll, kann entweder einen string oder einem table (mit einer bestimmten form) entgegennehmen. Dabei entscheidet das LanguageTool folgendermaßen:
+
+* Wenn der übergebene Wert ein string ist, wird dieser für **alle** Sprachen verwendet.
+* Wenn der übergebene Wert ein table ist, wird nach einem key gesucht, der der ausgewählten Sprache entspricht.
+* Wenn kein key gefunden werden kann, wird nach dem key "shared" gesucht. Wird dieser gefunden, wird dieser auch verwendet.
+* Wenn kein key und kein "shared" gefunden werden kann, wird ein fehler-text als string zurückgegeben.
+
 
