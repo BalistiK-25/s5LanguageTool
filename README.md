@@ -55,14 +55,14 @@ It is important to **first** add the languages to the LanguageTool **before** di
 
 ## Briefings and such
 
-Nachdem das LanguageTool nun erfolgreich initalisiert wurde und mehrere Sprachen hinzugefügt wurden, müssen weiterführend die Briefings, Messages, Cutscenes, etc... angepasst werden. Im Grunde sind alle mehrsprachigen Textausgaben auf dem gleichen Muster aufgebaut: Jede Funktion, die einen string entgegennimmt der mehrsprachig ausgegeben werden soll, kann entweder einen string oder einem table (mit einer bestimmten form) entgegennehmen. Dabei entscheidet das LanguageTool folgendermaßen:
+If the LanguageTool has been successfully initialised and several languages have been added, the briefings, messages, cutscenes, etc... must be adapted. Basically, all multilingual text outputs are built on the same pattern: Each function that origninally receives a string, that should output in multiple languages, can either receive a string or a table (with a certain pattern). Let's take the regular "Message"-Function. The LanguageTool decides as follows:
 
-* Wenn der übergebene Wert ein string ist, wird dieser für **alle** Sprachen verwendet.
-* Wenn der übergebene Wert ein table ist, wird nach einem key gesucht, der der ausgewählten Sprache entspricht.
-* Wenn kein key gefunden werden kann, wird nach dem key "shared" gesucht. Wird dieser gefunden, wird dieser auch verwendet.
-* Wenn kein key und kein "shared" gefunden werden kann, wird ein fehler-text als string zurückgegeben.
+* If the value passed is a string, it will be used for **all** languages.
+* If the value passed is a table, a key is searched that corresponds to the selected language.
+* If the value passed is a table and no key can be found that corresponds to the selected language, the key "shared" is searched for. If this is found, it is will be used.
+* If the value passed is a table and no key and no "shared" can be found, an error text is returned as a string.
 
-Als Beispiel wird angenommen, dass das LanguageTool mit den Sprachen "de", "en", "pl" und "fr" initialisiert wurde. Folgend wird anhand einer einfachen Textausgabe (Message) gezeigt, wie das LanguageTool auswählt.
+As an example, it is assumed that the LanguageTool has been initialised with languages with the ids "de", "en", "pl" and "fr". In the following, a simple text output (Message) is used to show how the LanguageTool selects the proper language-string.
 
 ```
 -- Every selected language will display "Example Text"
@@ -91,3 +91,5 @@ LanguageTool.Message({
     pl = "Przykładowy tekst dla pl"
 })
 ```
+
+As you can see, the original "Message" function was not used in the example, but the "Message" function of the LanguageTool. All functions have been replaced by separate functions of the LanguageTool, like LanguageTool.Briefing, LanguageTool.Message or LanguageTool.StartCutscene. On one hand, this serves to prevent errors,  on the other hand, it also makes it possible to safely overwrite functions such as StartBriefing at any time without coming into conflict with the LanguageTool itself.
