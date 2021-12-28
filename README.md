@@ -10,7 +10,7 @@ Dieses Tool hier soll dies jedoch erleichtern, beziehungsweise ein Gerüst berei
 
 * In einem Fenster wird die Sprachauswahl angezeigt, die diese Karte unterstützt. Das Spiel wird dafür auch pausiert, damit die Auswahl der Sprache nicht versehentlich die Abläufe der Karte hindert.
 * Jegliche Funktionen, die eben mehrsprachig sein sollen, können über das Tool als mehrsprachig angeboten werden.
-*	Umlaute oder besondere Zeichen, die es in vielen Sprachen gibt, werden automatisch in Unicode konvertiert. (Siehe Einbinden von unterstützten Sprachen)
+* Umlaute oder besondere Zeichen, die es in vielen Sprachen gibt, werden automatisch in UTF-8 konvertiert. (Siehe Einbinden von unterstützten Sprachen)
 * Briefings, Messages und Co. müssen wenig angepasst werden, um mehrere Sprachen gleichzeitig zu unterstützen.
 
 Hinzufügen von Sprachen und anzeigen des Sprachselektors
@@ -36,24 +36,16 @@ Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefü
 
 `title` (string) = der Titel, der am oberen Fenster angezeigt wird, wenn die Sprache angewählt wird.
 
-`charset` (table) = (optional) das Charset stellt die Sonderzeichen der jeweiligen Sprache dar. Das charset wird dafür genutzt, diese Sonderzeichen in den Texten in Unicode zu konvertieren.
+`charset` (table) = (optional) das Charset stellt die Sonderzeichen der jeweiligen Sprache dar. Das charset wird dafür genutzt, diese Sonderzeichen in den Texten in UTF-8 zu konvertieren. Da zum Beispiel Siedler in Briefings Probleme hat Umlaute anzuzeigen, müssten diese in den Briefings durch UTF-8 durch z.B. eine Umlaute-Funktion ersetzt werden. Dies wird eben durch dieses angegebene Tool automatisch erstezt, je nach angegebenen charset.
 
 So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:
-`
-LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
-
+`LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
     {"ä", "\195\164"},
-    
     {"ö", "\195\182"},
-    
     {"ü", "\195\188"},
-    
     {"ß", "\195\159"},
-    
     {"Ä", "\195\132"},
-    
     {"Ö", "\195\150"},
-    
     {"Ü", "\195\156"}
-    
 })`
+
