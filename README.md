@@ -49,3 +49,9 @@ So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:
     {"Ü", "\195\156"}
 })`
 
+Wichtig ist, dass man **erst** die Sprachen dem LanguageTool hinzufügt, bevor man das Fenster anzeigt.
+
+
+Erstellen von Multi-Sprachen Funktionen
+-----------
+
