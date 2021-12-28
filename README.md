@@ -2,7 +2,7 @@
 ## Table of contents
 * [Why a language tool](#why-a-language-tool)
 * [Including Supported Languages](#including-supported-languages)
-* [Briefings und co](#briefings-und-co)
+* [Briefings and such](#briefings-and-such)
 
 ## Why a language tool
 
@@ -18,23 +18,22 @@ However, this tool is intended to make this easier, or to provide a framework th
 
 ## Including Supported Languages
 
-Wenn man das LanguageTool als Comfort in seine Karte kopiert hat, wird zuerst nichts weiteres passieren. Über den folgenden Aufruf kann man das Fenster anzeigen (am Besten als Aufruf in der FMA). So lange das Fenster angezeigt wird, ist das Spiel pausiert
+If you have copied the LanguageTool as a Comfort-Function into your mapscript, nothing will happen at first. You need to call the following function, in order to display the window (best as a call in the FMA). Note: As long as the window is displayed, the game is paused.
 `LanguageTool.DisplayLanguageSelection(state, callback, parameters)`
-* `state` (number) = optional, ob das Fenster angezeigt werden soll oder nicht. 0 = unsichtbar, 1 = sichtbar.
-* `callback` (function) = optional, die Funktion, die nach Bestätigung der Sprachauswahl aufgerufen wird.
-* `parameters` (table) = optional, die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
+* `state` (number) = optional; whether the window should be displayed or not. 0 = invisible, 1 = visible.
+* `callback` (function) = optional; the function that is called after confirming the language selection.
+* `parameters` (table) = optional; the parameters to be passed to the callback function when it is called.
 
-
-Dieses Fenster ist allerdings zwecklos, da man keine Sprache auswählen kann.
-Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefügt werden. Sinn und Zweck ist, dass der Mapentwickler selbst festlegen soll, welche Sprachen er unterstützt. Daher müssen diese über die folgende Funktion hinzugefügt werden:
+However, this window will be pretty useless, as you cannot select any language.
+In order for languages to become available for selection, they must be added first. The purpose of this is that the map developer himself should determine which languages he supports. Therefore, these must be added via the following function:
 
 `LanguageTool.AddToLanguageSelection(id, name, title, charset)`
-* `id` (string) = die einteudige ID der Sprache. (Empfolen ist der Sprachkürzel nach ISO 639-1)
-* `name` (string) = der Name der Sprache (am Besten in der Muttersprache, z.B. Deutsch, English, Polski, ...)
-* `title` (string) = der Titel, der am oberen Fenster angezeigt wird, wenn die Sprache angewählt wird.
-* `charset` (table) = (optional) das Charset stellt die Sonderzeichen der jeweiligen Sprache dar. Das charset wird dafür genutzt, diese Sonderzeichen in den Texten in UTF-8 zu konvertieren. Da zum Beispiel Siedler in Briefings Probleme hat Umlaute anzuzeigen, müssten diese in den Briefings durch UTF-8 durch z.B. eine Umlaute-Funktion ersetzt werden. Dies wird eben durch dieses angegebene Tool automatisch erstezt, je nach angegebenen charset.
+* `id` (string) = the deterministic ID of the language. (Recommended is the language abbreviation according to ISO 639-1)
+* `name` (string) = the name of the language (preferably in the mother tongue, e.g. Deutsch, English, Polski, ...)
+* `title` (string) = the title displayed at the top window when the language is "hovered over".
+* `charset` (table) = (optional) the charset represents the special characters of the respective language. The charset is used to convert these special characters in the texts into UTF-8. Since, for example, Settler has problems displaying special characters in briefings, these would have to be replaced in the briefings by UTF-8 encoding, e.g. by an special function. This is automatically replaced by this tool, depending on the given charset.
 
-So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:  
+For example, this is how you add German to the language selection: 
 ```
 LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
     {"ä", "\195\164"},
@@ -46,9 +45,9 @@ LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsc
     {"Ü", "\195\156"}
 })
 ```
+The special characters are specified with their UTF-8 code, which allows them to be replaced in texts. This may also work as to replace any "ó" with an "o", as there is no representation for that letter in settlers.
 
-Wichtig ist, dass man **erst** die Sprachen dem LanguageTool hinzufügt, bevor man das Fenster anzeigt.
+It is important to **first** add the languages to the LanguageTool **before** displaying the selector.
 
-
-## Briefings und co
+## Briefings and such
 
