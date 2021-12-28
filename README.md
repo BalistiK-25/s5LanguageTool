@@ -1,6 +1,8 @@
 # s5_LanguageTool
 The whole LanguageTool is documented with Emmy Annotation. If you use Visual Studio Code, for example, you can download the lua-extension by sumneko which includes Emmy Annotation support.
 
+The LanguageTool is quite large and covers a vast amount of functions for multilingual support. It very well may be that it still misses some functions. It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
+
 ## Table of contents
 * [Why a language tool](#why-a-language-tool)
 * [Including Supported Languages](#including-supported-languages)
@@ -17,8 +19,6 @@ However, this tool is intended to make this easier, or to provide a framework th
 * Any functions that are to be multilingual can be offered as multilingual via the tool.
 * Special characters that exist in many languages are automatically converted to UTF-8. (See [Including Supported Languages](#including-supported-languages))
 * Briefings, messages and the like need little adaptation to support several languages at the same time.
-
-The LanguageTool is quite large and covers a vast amount of functions for multilingual support. It very well may be that it still misses some functions. It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
 
 ## Including Supported Languages
 
