@@ -2,7 +2,7 @@
 ## Inhaltsverzeichnis
 * [Warum ein language tool](#warum-ein-language-tool)
 * [Hinzufügen von Sprachen und anzeigen des Sprachselektors](#hinzufügen-von-sprachen-und-anzeigen-des-sprachselektors)
-* [Briefings und co](#briefings und co)
+* [Briefings und co](#briefings-und-co)
 
 ## Warum ein language tool
 -----------
