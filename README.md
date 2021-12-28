@@ -1,5 +1,8 @@
 # s5_LanguageTool
-==
+
+Warum ein "language tool"?
+-----------
+
 Freispiel- und Kampagnenkarten sind von den Entwicklern so erstellt worden, dass diese in mehreren Sprachen angeboten werden können. Dafür bedient sich z.B. ein Briefing einer XML-Datei, die sich in einem Ordner mit der jeweiligen Sprachversion des Spiels befindet (Bei Nutzung des deutschen Sprachpaketes, liegt die XML-Datei dafür in dem Ordner „\extra2\shr\text\de\InGame“).
 
 Nun ist diese Möglichkeit, Strings aus einer XML-Datei zu laden, leider auch nur auf die vorinstallierten Karten so möglich. Map-Ersteller können von ihrer Karte her nicht auf eine XML-Datei zugreifen, geschweige denn auf eine andere Datei außer LUA-Dateien (was auch gut so ist). Dies macht es aber sehr aufwendig, eigene Karten in mehreren Sprachen anzubieten.
