@@ -39,7 +39,8 @@ Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefü
 `charset` (table) = (optional) das Charset stellt die Sonderzeichen der jeweiligen Sprache dar. Das charset wird dafür genutzt, diese Sonderzeichen in den Texten in Unicode zu konvertieren.
 
 So fügt man zum Beispiel Deutsch in die Sprachauswahl hinzu:
-`LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
+`
+LanguageTool.AddToLanguageSelection("de", "Deutsch", "Drücke ENTER um in deutsch zu Spielen", {
 
     {"ä", "\195\164"},
     
