@@ -18,6 +18,8 @@ However, this tool is intended to make this easier, or to provide a framework th
 * Special characters that exist in many languages are automatically converted to UTF-8. (See [Including Supported Languages](#including-supported-languages))
 * Briefings, messages and the like need little adaptation to support several languages at the same time.
 
+The LanguageTool is quite large and covers a vast amount of functions for multilingual support. It very well may be that it still misses some functions. It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
+
 ## Including Supported Languages
 
 If you have copied the LanguageTool as a Comfort-Function into your mapscript, nothing will happen at first. You need to call the following function, in order to display the window (best as a call in the FMA). Note: As long as the window is displayed, the game is paused.
