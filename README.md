@@ -13,3 +13,20 @@ Dieses Tool hier soll dies jedoch erleichtern, beziehungsweise ein Gerüst berei
 *	Umlaute oder besondere Zeichen, die es in vielen Sprachen gibt, werden automatisch in Unicode konvertiert. (Siehe Einbinden von unterstützten Sprachen)
 * Briefings, Messages und Co. müssen wenig angepasst werden, um mehrere Sprachen gleichzeitig zu unterstützen.
 
+Hinzufügen von Sprachen und anzeigen des Sprachselektors
+-----------
+
+Wenn man das LanguageTool als Comfort in seine Karte kopiert hat, wird zuerst nichts weiteres passieren. Über den folgenden Aufruf kann man das Fenster anzeigen (am Besten als Aufruf in der FMA). So lange das Fenster angezeigt wird, ist das Spiel pausiert
+`LanguageTool.DisplayLanguageSelection(state, callback, parameters)`
+`state` (number) = ob das Fenster angezeigt werden soll oder nicht. 0 = unsichtbar, 1 = sichtbar.
+`callback` (function) = die Funktion, die nach Bestätigung der Sprachauswahl aufgerufen wird.
+`parameters` (table) = die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
+
+Dieses Fenster ist allerdings zwecklos, da man keine Sprache auswählen kann.
+Damit Sprachen zur Auswahl verfügbar werden, müssen diese ebenfalls hinzugefügt werden. Sinn und Zweck ist, dass der Mapentwickler selbst festlegen soll, welche Sprachen er unterstützt. Daher müssen diese über die folgende Funktion hinzugefügt werden:
+
+`LanguageTool.AddToLanguageSelection(id, name, title, charset)`
+`id` (string) = ob das Fenster angezeigt werden soll oder nicht. 0 = unsichtbar, 1 = sichtbar.
+`name` (string) = die Funktion, die nach Bestätigung der Sprachauswahl aufgerufen wird.d
+`title` (string) = die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
+`charset` (table) = die Parameter, die der callback-function bei Aufruf übergeben werden sollen.
