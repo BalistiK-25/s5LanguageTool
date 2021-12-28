@@ -62,4 +62,30 @@ Nachdem das LanguageTool nun erfolgreich initalisiert wurde und mehrere Sprachen
 * Wenn kein key gefunden werden kann, wird nach dem key "shared" gesucht. Wird dieser gefunden, wird dieser auch verwendet.
 * Wenn kein key und kein "shared" gefunden werden kann, wird ein fehler-text als string zurückgegeben.
 
+Als Beispiel wird angenommen, dass das LanguageTool mit den Sprachen "de", "en", "pl" und "fr" initialisiert wurde. Folgend wird anhand einer einfachen Textausgabe (Message) gezeigt, wie das LanguageTool auswählt.
 
+```
+-- Every selected language will display "Example Text"
+LanguageTool.Message("Example Text") 
+
+-- Every selected language, except with the id "de" and "en", will display "Example text for shared".
+-- If the language with the id "de" is selected, "Beispieltext für de" will be displayed.
+-- If the language with the id "en" is selected, "Example text for en" will be displayed.
+LanguageTool.Message({
+    shared = "Example text for shared",
+    de = "Beispieltext für de",
+    en = "Example text for en"
+})
+
+-- If the language with the id "de" is selected, "Beispieltext für de" will be displayed.
+-- If the language with the id "en" is selected, "Example text for en" will be displayed.
+-- If the language with the id "pl" is selected, "Przykładowy tekst dla pl" will be displayed.
+-- Since no key is set for the id "fr", if "fr" would be the selected language an error message would be displayed saying "LanguageTool: No key was found for the
+
+-- selected language with the key "fr" "
+LanguageTool.Message({
+    en = "Example text for en",
+    de = "Beispieltext für de",
+    pl = "Przykładowy tekst dla pl"
+})
+```
