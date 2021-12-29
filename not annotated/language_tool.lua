@@ -247,6 +247,7 @@ function LanguageTool:__DisplayText()
     local languageList = ""
     local languageTitle = ""
     local moveDown = "@color:255,255,255 (D) DOWN "
+    local select = "(ENTER) Select"
 
     for k, v in pairs(self.languageTable) do
         if k == self.currentIndex then
@@ -261,7 +262,7 @@ function LanguageTool:__DisplayText()
     languageTitle = languageTitle == "" and "No languages for selection found!" or languageTitle
 
     XGUIEng.SetText("CreditsWindowTextTitle", "@color:255,255,255 "..languageTitle)
-    XGUIEng.SetText("CreditsWindowText", ""..moveUp.."\n\n"..languageList.."\n"..moveDown)
+    XGUIEng.SetText("CreditsWindowText", ""..moveUp.."\n\n"..languageList.."\n"..moveDown.."\n\n"..select)
 end
 
 function LanguageTool.DisplayLanguageSelection(_state, _callback, _params)
