@@ -21,7 +21,7 @@ This tool is intended to make this easier and avoid uploading maps in multiple l
 
 * A window displays the language selection, with which a user can choose between a set of languages. The game is also paused for this purpose, so that the language selection does not interfere with the map's timing.
 * Any functions that are to be multilingual can be offered as multilingual via the tool, either with the already implemented ones or custom made ones.
-* Special characters that exist in many languages are "automatically" converted to UTF-8. (See [Including Supported Languages](#including-supported-languages))
+* Special characters that exist in many languages are "automatically" converted to UTF-8. (See [Including Languages](#including-languages))
 * Briefings, Messages and the like need little adaptation to support several languages at the same time.
 
 ## Including Languages
