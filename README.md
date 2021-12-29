@@ -1,4 +1,4 @@
-# s5_LanguageTool
+# s5LanguageTool
 The whole LanguageTool is documented with Emmy Annotation. If you use Visual Studio Code, for example, you can download the lua-extension by sumneko which includes Emmy Annotation support.
 
 The LanguageTool is quite large too (also because of this Emmy annotation) and covers a vast amount of functions for multilingual support (It very well may be that it still misses some functions!). It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
