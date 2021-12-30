@@ -1,5 +1,5 @@
---[[ LanguageTool   version 2 ]]--
---[[ Author:        BalistiK  ]]--
+--[[ LanguageTool   version 2.2 ]]--
+--[[ Author:        BalistiK  	]]--
 LanguageTool = {
     isActive = false,
     callback = nil,
@@ -188,12 +188,13 @@ end
 
 function LanguageTool:GetString(_table, _returnInput)
     _returnInput = _returnInput or false
+    local prefix = (_table == nil or _table.prefix == nil and "" or _table.prefix.." ")
 
     if _table ~= nil and type(_table) == "table" and self.chosenLanguage ~= nil then
         if _table[self.chosenLanguage.id] ~= nil then
-            return LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)
+            return prefix..LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)
         elseif _table.shared ~= nil then
-            return LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)
+            return prefix..LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)
         end
     end
 
@@ -201,7 +202,7 @@ function LanguageTool:GetString(_table, _returnInput)
         return _table
     end
 
-    return string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))
+    return prefix..string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))
 end
 
 function LanguageTool.AddToLanguageSelection(_id, _name, _title, _characterSet)
