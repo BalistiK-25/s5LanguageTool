@@ -65,6 +65,7 @@ If the LanguageTool has been successfully initialised and several languages have
 * If the value passed is a *table*, a *key* is searched that *corresponds to the selected language's id*.
 * If the value passed is a *table* and *no key can be found* that corresponds to the selected language, the *key shared* is searched for. If this is found, it is will be used.
 * If the value passed is a *table* and *no key and no shared* can be found, an *error text is returned as a string*.
+* As from version 2.2 the *prefix* key can now be set, allowing to pass a value that will be placed for every returned string. The prefix key will automatically add a empty string at the end of the prefix.
 
 You can look at the shared key as a "default option" in a switch-statement in other languages.  
 As an example, it is assumed that the LanguageTool has been initialised with languages with the ids "de", "en", "pl" and "fr". In the following example, a simple text output (Message) is used to show how the LanguageTool selects the proper language-string.
@@ -90,6 +91,21 @@ LanguageTool.Message({
     en = "Example text for en",
     de = "Beispieltext für de",
     pl = "Przykładowy tekst dla pl"
+})
+
+-- As from version 2.2, the prefix allows to pass a string that will prepend every returned string
+-- In this case, every string will start with "@color:0,255,0", allowing every returned language string
+-- to appear green. Every string can be set for the prefix.
+-- If the language with the id "de" is selected, "Beispieltext für de" will be displayed.
+-- If the language with the id "en" is selected, "Example text for en" will be displayed.
+-- If the language with the id "pl" is selected, "Przykładowy tekst dla pl" will be displayed.
+-- If the language with the id "fr" is selected, "Exemple de texte pour fr" will be displayed.
+LanguageTool.Message({
+    prefix = "@color:0,255,0"
+    en = "Example text for en",
+    de = "Beispieltext für de",
+    pl = "Przykładowy tekst dla pl",
+    fr = "Exemple de texte pour fr"
 })
 ```
 
