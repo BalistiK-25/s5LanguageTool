@@ -10,6 +10,7 @@ Furthermore, the calls of LanguageTool.StartCutscene or LanguageTool.AddTribute 
 * [Including Languages](#including-languages)
 * [General Pattern](#general-Pattern)
 * [Briefings and Cutscenes](#briefings-and-cutscenes)
+* [Checking for missing keys](#checking-for-missing-keys)
 * [Adding your own multilingual function](#adding-your-own-multilingual-function)
 
 ## Why a language tool
@@ -61,7 +62,7 @@ It is important to **first** add the languages to the LanguageTool **before** di
 
 If the LanguageTool has been successfully initialised and several languages have been added, the Briefings, Messages, Cutscenes, etc... must be adapted next. Basically, all multilingual text outputs are built on the same pattern: Each function that origninally receives a string, that should output in multiple languages, can either receive a string that is valid for all languages or a table (with a certain pattern). Let's take the regular "Message"-Function as an example. The LanguageTool decides as follows:
 
-* If the value passed is a *string*, it will be used for **all** languages.
+* If the value passed is a *string*, it will be used for **all** languages (No replacement of the special characters is exectued!)
 * If the value passed is a *table*, a *key* is searched that *corresponds to the selected language's id*.
 * If the value passed is a *table* and *no key can be found* that corresponds to the selected language, the *key shared* is searched for. If this is found, it is will be used.
 * If the value passed is a *table* and *no key and no shared* can be found, an *error text is returned as a string*.
@@ -196,6 +197,23 @@ The concept stays the same across all functions that may take text that should b
 * LanguageTool.CreateNPC
 * LanguageTool.AddQuest
 * LanguageTool.AddTribute (requires comfort-function)
+
+## Checking for missing keys
+
+As in version 2.3 a new functionionality was added: `LanguageTool.EnableLanguageCheck()` (disabled by default).  
+With this function it is now possible to assist in creating multilingual Briefings, Messages and such. By calling this function, the `GetString` function passively checks, if all languages have a valid key representation within the passed table. If it is not the case, a warning is appended to the string returned by the function, which looks like this: "LanguageTool: No key/(s) was/were found for the id/(s): ...". This warning is not returned, if the `GetString` function is called with a true as its returnInput flag.
+
+It is important to mention that this **does not work** as expected, if the **given value is a string**, like the title in this case:
+```
+{
+    title = "Test Title",
+    text = {
+        de = "Test for de",
+        en = "Test for en"
+    }
+}
+```
+Since a string as value is a valid key itself, a warning wouldn't make much sense here. It would, however, return that for the languages with the id "pl" and "fr" no key is set.
 
 ## Adding your own multilingual function
 
