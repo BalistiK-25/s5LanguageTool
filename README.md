@@ -10,7 +10,7 @@ Furthermore, the calls of LanguageTool.StartCutscene or LanguageTool.AddTribute 
 * [Including Languages](#including-languages)
 * [General Pattern](#general-Pattern)
 * [Briefings and Cutscenes](#briefings-and-cutscenes)
-* [Checking for missing keys](#checking-for-missing-keys)
+* [Check for missing keys](#check-for-missing-keys)
 * [Adding your own multilingual function](#adding-your-own-multilingual-function)
 
 ## Why a language tool
@@ -198,7 +198,7 @@ The concept stays the same across all functions that may take text that should b
 * LanguageTool.AddQuest
 * LanguageTool.AddTribute (requires comfort-function)
 
-## Checking for missing keys
+## Check for missing keys
 
 As in version 2.3 a new functionionality was added: `LanguageTool.EnableLanguageCheck()` (disabled by default).  
 With this function it is now possible to assist in creating multilingual Briefings, Messages and such. By calling this function, the `GetString` function passively checks, if all languages have a valid key representation within the passed table. If it is not the case, a warning is appended to the string returned by the function, which looks like this: "LanguageTool: No key/(s) was/were found for the id/(s): ...". This warning is not returned, if the `GetString` function is called with a true as its returnInput flag.
