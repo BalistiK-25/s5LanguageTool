@@ -1,5 +1,5 @@
---[[ LanguageTool   version 2.3	]]--
---[[ Author:        BalistiK  	]]--
+--[[ LanguageTool   version 2.4.0 	]]--
+--[[ Author:        BalistiK    	]]--
 LanguageTool = {
     isActive = false,
     callback = nil,
@@ -8,11 +8,14 @@ LanguageTool = {
     chosenLanguage = nil,
     languageTable = {},
     currentIndex = 1,
-    checkEnabled = false
+    checkEnabled = false,
+    flagStrings = false
 }
 
 LanguageTool.NO_LANG_ERROR = "@color:255,95,95 LanguageTool: No language was set. Language specific functions may not work!"
 LanguageTool.NO_LANG_FOR_KEY = "@color:255,255,95 LanguageTool: No key was found for the selected language with the key \"LANGKEY\""
+LanguageTool.NO_KEYS_FOUND = "@color:255,255,95 LanguageTool: No key/(s) was/were found for the id/(s): KEY_IDS"
+LanguageTool.FLAG_STRING = "@color:95,255,95 LanguageTool: The valid key is a string."
 
 LanguageTool.GERMAN_CHARSET = {
     {"Ä", "\195\132"},{"ä", "\195\164"},
@@ -80,12 +83,6 @@ function LanguageTool.SubstituteStrings(_text, _table)
     return _text
 end
 
---- Activates the check whether all available languages have a key for a multilingual function.
---- Note, that this function does not cover string values, since they are valid keys!
-function LanguageTool.EnableLanguageCheck()
-    LanguageTool.checkEnabled = true
-end
-
 --- Initzialises the language selector (setting the callback function, binding keys)
 --- This function should not be called outside of the scope of the LangageSelector itself.
 ---
@@ -104,6 +101,16 @@ function LanguageTool:__Init(_callback, _parameters)
     self.parameters = _parameters and _parameters or nil
 end
 
+--- Activates the check whether all available languages have a key for a multilingual function.
+--- Note, that this function does not cover string values, since they are valid keys!
+---@param _flagStrings boolean If strings should be flagged as warning
+function LanguageTool.EnableLanguageCheck(_flagStrings)
+    LanguageTool.checkEnabled = true
+    if _flagStrings then
+        LanguageTool.flagStrings = true
+    end
+end
+
 --- Takes a table as its input, which contains either a language specific id with its string and/or a
 --- "shared" key, which will be used indead and displays it as a regular text-message. 
 --- The text can also be set as a regular string, wich will be displayed for all languages, no matter the id. 
@@ -115,9 +122,7 @@ end
 ---                                     ...
 ---                     }
 function LanguageTool.Message(_text)
-    if _text ~= nil and type(_text) == "table" then
-        _text = LanguageTool:GetString(_text)
-    end
+    _text = LanguageTool:GetString(_text)
 
     Message(_text)
 end
@@ -138,29 +143,14 @@ function LanguageTool.StartBriefing(_briefing)
     for _, v in pairs(_briefing) do
         if type(v) == "table" then
             if v.mc ~= nil then
-                if v.mc.firstText ~= nil and type(v.mc.firstText) == "table" then
-                    v.mc.firstText = LanguageTool:GetString(v.mc.firstText)
-                end
+                v.mc.firstText = LanguageTool:GetString(v.mc.firstText)
+                v.mc.secondText = LanguageTool:GetString(v.mc.secondText)
 
-                if v.mc.secondText ~= nil and type(v.mc.secondText) == "table" then
-                    v.mc.secondText = LanguageTool:GetString(v.mc.secondText)
-                end
-
-                if v.mc.title ~= nil and type(v.mc.title) == "table" then
-                    v.mc.title = LanguageTool:GetString(v.mc.title)
-                end
-
-                if v.mc.text ~= nil and type(v.mc.text) == "table" then
-                    v.mc.text = LanguageTool:GetString(v.mc.text)
-                end
+                v.mc.title = LanguageTool:GetString(v.mc.title)
+                v.mc.text = LanguageTool:GetString(v.mc.text)
             else
-                if v.title ~= nil and type(v.title) == "table" then
-                    v.title = LanguageTool:GetString(v.title)
-                end
-
-                if v.text ~= nil and type(v.text) == "table" then
-                    v.text = LanguageTool:GetString(v.text)
-                end
+                v.title = LanguageTool:GetString(v.title)
+                v.text = LanguageTool:GetString(v.text)
             end
         end
     end
@@ -185,13 +175,8 @@ function LanguageTool.StartCutscene(_cutscene)
     if StartCutscene ~= nil and type(StartCutscene) == "function" then
         for _, v in pairs(_cutscene.Flights) do
 			if type(v) == "table" then
-                if v.title ~= nil and type(v.title) == "table" then
-                    v.title = LanguageTool:GetString(v.title)
-                end
-
-                if v.text ~= nil and type(v.text) == "table" then
-                    v.text = LanguageTool:GetString(v.text)
-                end
+                v.title = LanguageTool:GetString(v.title)
+                v.text = LanguageTool:GetString(v.text)
 			end
 		end
 
@@ -210,9 +195,7 @@ end
 ---                                         ...
 ---                         }
 function LanguageTool.SetPlayerName(_player, _name)
-    if _name ~= nil and type(_name) == "table" then
-        _name = LanguageTool:GetString(_name)
-    end
+    _name = LanguageTool:GetString(_name)
 
     SetPlayerName(_player, _name)
 end
@@ -228,9 +211,7 @@ end
 ---                                     ...
 ---                     }
 function LanguageTool.CreateNPC(_npc)
-    if _npc.wrongHeroMessage ~= nil and type(_npc.wrongHeroMessage) == "table" then
-        _npc.wrongHeroMessage = LanguageTool:GetString(_npc.wrongHeroMessage)
-    end
+    _npc.wrongHeroMessage = LanguageTool:GetString(_npc.wrongHeroMessage)
 
     CreateNPC(_npc)
 end
@@ -260,12 +241,8 @@ function LanguageTool.AddQuest(_questTable)
     assert(_questTable.title ~= nil and (type(_questTable.title) == "string" or type(_questTable.title) == "table"), "Questtable.title must not be nil and a string or table!")
     assert(_questTable.text ~= nil and (type(_questTable.text) == "string" or type(_questTable.text) == "table"), "Questtable.text must not be nil and a string or table!")
 
-    if _questTable.title ~= nil and type(_questTable.title) == "table" then
-        _questTable.title = LanguageTool:GetString(_questTable.title)
-    end
-    if _questTable.text ~= nil and type(_questTable.text) == "table" then
-        _questTable.text = LanguageTool:GetString(_questTable.text)
-    end
+    _questTable.title = LanguageTool:GetString(_questTable.title)
+    _questTable.text = LanguageTool:GetString(_questTable.text)
 
     assert(_questTable.player ~= nil and type(_questTable.player) == "number", "Questtable.player must not be nil and a number!")
     assert(_questTable.id ~= nil and type(_questTable.id) == "number", "Questtable.id must not be nil and a number!")
@@ -285,9 +262,7 @@ end
 ---                                         ...
 ---                         }
 function LanguageTool.AddTribute(_tribute)
-    if _tribute.text ~= nil and type(_tribute.text) == "table" then
-        _tribute.text = LanguageTool:GetString(_tribute.text)
-    end
+    _tribute.text = LanguageTool:GetString(_tribute.text)
 
     if AddTribute ~= nil and type(AddTribute) == "function" then
         AddTribute(_tribute)
@@ -307,33 +282,37 @@ end
 --- @return string any              A error-string or the input
 function LanguageTool:GetString(_table, _returnInput)
     _returnInput = _returnInput or false
-    local prefix = (_table == nil or _table.prefix == nil and "" or _table.prefix.." ")
-    local missingKeys = ""
+    local prefix = (_table ~= nil and type(_table) == "table" and _table.prefix ~= nil) and _table.prefix.." " or ""
+    local warning = ""
 
     if self.checkEnabled then
-        if type(_table) == "table" then
+        if type(_table) == "table" and not _returnInput then
             for _, v in pairs(self.languageTable) do
                 if _table[v.id] == nil and _table.shared == nil then
-                    missingKeys = missingKeys..v.id..", "
+                    warning = warning..v.id..", "
                 end
             end
+            warning = (warning == "") and warning or "\n"..string.gsub(LanguageTool.NO_KEYS_FOUND, "KEY_IDS", string.sub(warning, 1, string.len(warning) - 2))
+        elseif self.flagStrings and type(_table) == "string" then
+            warning = "\n"..LanguageTool.FLAG_STRING
         end
-        missingKeys = missingKeys == "" and missingKeys or "\n"..string.gsub(LanguageTool.NO_KEYS_FOUND, "KEY_IDS", string.sub(missingKeys, 1, string.len(missingKeys) - 2))
     end
-
+    
     if _table ~= nil and type(_table) == "table" and self.chosenLanguage ~= nil then
         if _table[self.chosenLanguage.id] ~= nil then
-            return prefix..LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)..missingKeys
+            return prefix..LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)..warning
         elseif _table.shared ~= nil then
-            return prefix..LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)..missingKeys
+            return prefix..LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)..warning
         end
+    elseif _table ~= nil and type(_table) == "string" then
+        return _table..warning
     end
 
     if _returnInput then
         return _table
     end
 
-    return prefix..string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))..missingKeys
+    return prefix..string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))..warning
 end
 
 --- Adds a new language to the LanguageTool. Every other function, that should be multi-language, must include
