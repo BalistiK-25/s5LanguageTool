@@ -1,4 +1,4 @@
---[[ LanguageTool   version 2.2	]]--
+--[[ LanguageTool   version 2.3	]]--
 --[[ Author:        BalistiK  	]]--
 LanguageTool = {
     isActive = false,
@@ -7,7 +7,8 @@ LanguageTool = {
     initialised = false,
     chosenLanguage = nil,
     languageTable = {},
-    currentIndex = 1
+    currentIndex = 1,
+    checkEnabled = false
 }
 
 LanguageTool.NO_LANG_ERROR = "@color:255,95,95 LanguageTool: No language was set. Language specific functions may not work!"
@@ -77,6 +78,12 @@ function LanguageTool.SubstituteStrings(_text, _table)
     end
 
     return _text
+end
+
+--- Activates the check whether all available languages have a key for a multilingual function.
+--- Note, that this function does not cover string values, since they are valid keys!
+function LanguageTool.EnableLanguageCheck()
+    LanguageTool.checkEnabled = true
 end
 
 --- Initzialises the language selector (setting the callback function, binding keys)
@@ -301,12 +308,24 @@ end
 function LanguageTool:GetString(_table, _returnInput)
     _returnInput = _returnInput or false
     local prefix = (_table == nil or _table.prefix == nil and "" or _table.prefix.." ")
+    local missingKeys = ""
+
+    if self.checkEnabled then
+        if type(_table) == "table" then
+            for _, v in pairs(self.languageTable) do
+                if _table[v.id] == nil and _table.shared == nil then
+                    missingKeys = missingKeys..v.id..", "
+                end
+            end
+        end
+        missingKeys = missingKeys == "" and missingKeys or "\n"..string.gsub(LanguageTool.NO_KEYS_FOUND, "KEY_IDS", string.sub(missingKeys, 1, string.len(missingKeys) - 2))
+    end
 
     if _table ~= nil and type(_table) == "table" and self.chosenLanguage ~= nil then
         if _table[self.chosenLanguage.id] ~= nil then
-            return prefix..LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)
+            return prefix..LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)..missingKeys
         elseif _table.shared ~= nil then
-            return prefix..LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)
+            return prefix..LanguageTool.SubstituteStrings(_table.shared, self.chosenLanguage.charset)..missingKeys
         end
     end
 
@@ -314,7 +333,7 @@ function LanguageTool:GetString(_table, _returnInput)
         return _table
     end
 
-    return prefix..string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))
+    return prefix..string.gsub(LanguageTool.NO_LANG_FOR_KEY, "LANGKEY", (self.chosenLanguage == nil and type(self.chosenLanguage) or self.chosenLanguage.id))..missingKeys
 end
 
 --- Adds a new language to the LanguageTool. Every other function, that should be multi-language, must include
