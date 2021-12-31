@@ -200,7 +200,7 @@ The concept stays the same across all functions that may take text that should b
 
 ## Check for missing keys
 
-As in version 2.3 a new functionionality was added: `LanguageTool.EnableLanguageCheck()` (disabled by default).  
+As in version 2.3, a new functionionality was added: `LanguageTool.EnableLanguageCheck(_flagStrings)` (disabled by default).  
 With this function it is now possible to assist in creating multilingual Briefings, Messages and such. By calling this function, the `GetString` function passively checks, if all languages have a valid key representation within the passed table. If it is not the case, a warning is appended to the string returned by the function, which looks like this: "LanguageTool: No key/(s) was/were found for the id/(s): ...". This warning is not returned, if the `GetString` function is called with a true as its returnInput flag.
 
 It is important to mention that this **does not work** as expected, if the **given value is a string**, like the title in this case:
@@ -214,6 +214,8 @@ It is important to mention that this **does not work** as expected, if the **giv
 }
 ```
 Since a string as value is a valid key itself, a warning wouldn't make much sense here. It would, however, return that for the languages with the id "pl" and "fr" no key is set.
+
+As in version 2.4, an additional parmater can be passed to the `LanguageTool.EnableLanguageCheck(true)` function. This enables a flag, which marks every string to the `GetString` function, that the passed value is valid because it is a string. This helps to identify false positives, as it may not be clear if a string is left accidentally or on purpose. Like in the example above, if the flag is set to true, the title would now be appended with the string "LanguageTool: The valid key is a string.", to quickly spot any accidentally left out strings.
 
 ## Adding your own multilingual function
 
