@@ -58,6 +58,16 @@ The special characters are specified with their UTF-8 code, which allows them to
 
 It is important to **first** add the languages to the LanguageTool **before** displaying the selector.
 
+Since version 2.5 the LanguageTool now comes with predefined LanguageSets: German, English, French and Polish. They can be used in the following manner:
+```
+LanguageTool.AddToLanguageSelection(
+    LanguageTool.GERMAN_PRESET.id, 
+    LanguageTool.GERMAN_PRESET.text, 
+    LanguageTool.GERMAN_PRESET.title, 
+    LanguageTool.GERMAN_PRESET.charset
+)
+```
+
 ## General Pattern
 
 If the LanguageTool has been successfully initialised and several languages have been added, the Briefings, Messages, Cutscenes, etc... must be adapted next. Basically, all multilingual text outputs are built on the same pattern: Each function that origninally receives a string, that should output in multiple languages, can either receive a string that is valid for all languages or a table (with a certain pattern). Let's take the regular "Message"-Function as an example. The LanguageTool decides as follows:
