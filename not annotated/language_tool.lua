@@ -1,5 +1,5 @@
---[[ LanguageTool   version 2.5.0 	]]--
---[[ Author:        BalistiK    	]]--
+--[[ LanguageTool   version 3.0.0	]]--
+--[[ Author:        BalistiK		]]--
 LanguageTool = {
     isActive = false,
     callback = nil,
@@ -76,17 +76,21 @@ function LanguageTool.SubstituteStrings(_text, _table)
     return _text
 end
 
-function LanguageTool:__Init(_callback, _parameters)
-    if not self.initialised then
+function LanguageTool.Init()
+    if not LanguageTool.initialised then
         Input.KeyBindDown(Keys.W, "LanguageTool:__PreviousLanguage()", 2)
         Input.KeyBindDown(Keys.S, "LanguageTool:__NextLanguage()", 2)
         Input.KeyBindDown(Keys.Enter, "LanguageTool:__ChooseLanguage()", 2)
 
-        self.initialised = true
-    end
+        LanguageTool:__OverrideMessage()
+        LanguageTool:__OverrideStartBriefing()
+        LanguageTool:__OverrideStartCutscene()
+        LanguageTool:__OverrideSetPlayerName()
+        LanguageTool:__OverrideCreateNPC()
+        LanguageTool:__OverrideAddTribute()
 
-    self.callback = (_callback and type(_callback) == "function") and _callback or nil
-    self.parameters = _parameters and _parameters or nil
+        LanguageTool.initialised = true
+    end
 end
 
 function LanguageTool.EnableLanguageCheck(_flagStrings)
@@ -96,33 +100,61 @@ function LanguageTool.EnableLanguageCheck(_flagStrings)
     end
 end
 
-function LanguageTool.Message(_text)
-    _text = LanguageTool:GetString(_text)
-
-    Message(_text)
+function LanguageTool:__OverrideMessage()
+    Orig_Message = Message
+    Message = function (_text)
+        _text = LanguageTool:GetString(_text)
+        Orig_Message(_text)
+    end
 end
 
-function LanguageTool.StartBriefing(_briefing)
-    for _, v in pairs(_briefing) do
-        if type(v) == "table" then
-            if v.mc ~= nil then
-                v.mc.firstText = LanguageTool:GetString(v.mc.firstText)
-                v.mc.secondText = LanguageTool:GetString(v.mc.secondText)
+function LanguageTool:__OverrideStartBriefing()
+    Orig_StartBriefing = StartBriefing
+    StartBriefing = function (_briefing)
+        for _, v in pairs(_briefing) do
+            if type(v) == "table" then
+                if v.mc ~= nil then
+                    v.mc.firstText = LanguageTool:GetString(v.mc.firstText)
+                    v.mc.secondText = LanguageTool:GetString(v.mc.secondText)
+    
+                    v.mc.title = LanguageTool:GetString(v.mc.title)
+                    v.mc.text = LanguageTool:GetString(v.mc.text)
+                else
+                    v.title = LanguageTool:GetString(v.title)
+                    v.text = LanguageTool:GetString(v.text)
+                end
 
-                v.mc.title = LanguageTool:GetString(v.mc.title)
-                v.mc.text = LanguageTool:GetString(v.mc.text)
-            else
-                v.title = LanguageTool:GetString(v.title)
-                v.text = LanguageTool:GetString(v.text)
+                if v.quest ~= nil then
+                    v.quest.title = LanguageTool:GetString(v.quest.title)
+                    v.quest.text = LanguageTool:GetString(v.quest.text)
+                end
             end
         end
-    end
 
-    StartBriefing(_briefing)
+        Orig_StartBriefing(_briefing)
+    end
 end
 
-function LanguageTool.StartCutscene(_cutscene)
-    if StartCutscene ~= nil and type(StartCutscene) == "function" then
+function LanguageTool:__OverrideSetPlayerName()
+    Orig_SetPlayerName = SetPlayerName
+    SetPlayerName = function (_player, _name)
+        _name = LanguageTool:GetString(_name)
+        Orig_SetPlayerName(_player, _name)
+    end
+end
+
+
+function LanguageTool:__OverrideCreateNPC()
+    Orig_CreateNPC = CreateNPC
+    CreateNPC = function (_npc)
+        _npc.wrongHeroMessage = LanguageTool:GetString(_npc.wrongHeroMessage)
+        Orig_CreateNPC(_npc)
+    end
+end
+
+function LanguageTool:__OverrideStartCutscene()
+    Orig_StartCutscene = StartCutscene
+    StartCutscene = function (_cutscene)
         for _, v in pairs(_cutscene.Flights) do
 			if type(v) == "table" then
                 v.title = LanguageTool:GetString(v.title)
@@ -130,20 +162,23 @@ function LanguageTool.StartCutscene(_cutscene)
 			end
 		end
 
-        StartCutscene(_cutscene)
+        if Orig_StartCutscene ~= nil and type(Orig_StartCutscene) == "function" then
+            Orig_StartCutscene(_cutscene)
+        end
     end
 end
 
-function LanguageTool.SetPlayerName(_player, _name)
-    _name = LanguageTool:GetString(_name)
+function LanguageTool:__OverrideAddTribute()
+    Orig_AddTribute = AddTribute
+    AddTribute = function(_tribute)
+        _tribute.text = LanguageTool:GetString(_tribute.text)
 
-    SetPlayerName(_player, _name)
-end
+        Message(type(Orig_AddTribute))
 
-function LanguageTool.CreateNPC(_npc)
-    _npc.wrongHeroMessage = LanguageTool:GetString(_npc.wrongHeroMessage)
-
-    CreateNPC(_npc)
+        if Orig_AddTribute ~= nil and type(Orig_AddTribute) == "function" then
+            Orig_AddTribute(_tribute)
+        end
+    end
 end
 
 function LanguageTool.AddQuest(_questTable)
@@ -159,14 +194,6 @@ function LanguageTool.AddQuest(_questTable)
     assert(_questTable.type ~= nil and type(_questTable.type) == "number", "Questtable.type must not be nil and a number!")
 
     Logic.AddQuest(_questTable.player, _questTable.id, _questTable.type, _questTable.title, _questTable.text, 1)
-end
-
-function LanguageTool.AddTribute(_tribute)
-    _tribute.text = LanguageTool:GetString(_tribute.text)
-
-    if AddTribute ~= nil and type(AddTribute) == "function" then
-        AddTribute(_tribute)
-    end
 end
 
 function LanguageTool:GetString(_table, _returnInput)
@@ -186,7 +213,7 @@ function LanguageTool:GetString(_table, _returnInput)
             warning = "\n"..LanguageTool.FLAG_STRING
         end
     end
-    
+
     if _table ~= nil and type(_table) == "table" and self.chosenLanguage ~= nil then
         if _table[self.chosenLanguage.id] ~= nil then
             return prefix..LanguageTool.SubstituteStrings(_table[self.chosenLanguage.id], self.chosenLanguage.charset)..warning
@@ -287,9 +314,15 @@ function LanguageTool.DisplayLanguageSelection(_state, _callback, _params)
     if _state <= 0 then
         LanguageTool:__Hide()
     elseif _state > 0 then
-        LanguageTool:__Init(_callback, _params)
         LanguageTool:__DisplayText()
         LanguageTool:__Show()
+        
+        if not LanguageTool.initialised then
+            LanguageTool.Init()
+        end
+
+        LanguageTool.callback = (_callback and type(_callback) == "function") and _callback or nil
+        LanguageTool.parameters = _params and _params or nil
     end
 end
 
