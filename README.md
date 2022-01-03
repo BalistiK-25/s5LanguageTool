@@ -3,7 +3,7 @@ The whole LanguageTool is documented with Emmy Annotation. If you use Visual Stu
 
 The LanguageTool is quite large too (also because of this Emmy annotation) and covers a vast amount of functions for multilingual support (It very well may be that it still misses some functions!). It also very well be that this LanguageTool might be a little bit of an **overkill** for small maps with **little amount of text**.
 
-Furthermore, the calls of LanguageTool.StartCutscene or LanguageTool.AddTribute may only work if you have the correct Comfort-Functions in your script. Otherwise nothing will happen.
+Furthermore, the calls of StartCutscene or AddTribute may only work if you have the correct Comfort-Functions in your script. Otherwise nothing will happen.
 
 ## Table of contents
 * [Why a language tool](#why-a-language-tool)
@@ -27,7 +27,7 @@ This tool is intended to make this easier and avoid uploading maps in multiple l
 
 ## Including Languages
 
-If you have copied the LanguageTool as a Comfort-Function into your mapscript (or include the lua file), you can call the following function, in order to display the language-selection-window (best as a call in the FMA). As long as the window is displayed, the game is paused.
+If you have copied the LanguageTool as a Comfort-Function into your mapscript (or include the lua file), you can call the following function, in order to display the language-selection-window (best as a call in the FMA). As long as the window is displayed, the game is paused:
 `LanguageTool.DisplayLanguageSelection(state, callback, parameters)`
 * `state` (number) = optional, but must be set if a callback function is passed; whether the window should be displayed or not. 0 = invisible, 1 = visible.
 * `callback` (function) = optional; the function that is called after confirming the language selection.
@@ -76,19 +76,19 @@ If the LanguageTool has been successfully initialised and several languages have
 * If the value passed is a *table*, a *key* is searched that *corresponds to the selected language's id*.
 * If the value passed is a *table* and *no key can be found* that corresponds to the selected language, the *key shared* is searched for. If this is found, it is will be used.
 * If the value passed is a *table* and *no key and no shared* can be found, an *error text is returned as a string*.
-* As from version 2.2 the *prefix* key can now be set, allowing to pass a value that will be placed in front of every returned string. The prefix key will automatically add a empty string (prefix.." ") at the end of it.
+* As from version 2.2 the *prefix* key can now be set, allowing to pass a value that will be placed in front of every returned string. The prefix key will automatically add an empty string (prefix.." ") at the end of it.
 
-You can look at the shared key as a "default option" in a switch-statement in other languages.  
+You can look at the shared key as a "default option" in a switch-statement in other programming languages.  
 As an example, it is assumed that the LanguageTool has been initialised with languages with the ids "de", "en", "pl" and "fr". In the following example, a simple text output (Message) is used to show how the LanguageTool selects the proper language-string.
 
 ```
 -- Every selected language will display "Example Text"
-LanguageTool.Message("Example Text") 
+Message("Example Text") 
 
 -- Every selected language, except with the id "de" and "en", will display "Example text for shared".
 -- If the language with the id "de" is selected, "Beispieltext für de" will be displayed.
 -- If the language with the id "en" is selected, "Example text for en" will be displayed.
-LanguageTool.Message({
+Message({
     shared = "Example text for shared",
     de = "Beispieltext für de",
     en = "Example text for en"
@@ -98,7 +98,7 @@ LanguageTool.Message({
 -- If the language with the id "en" is selected, "Example text for en" will be displayed.
 -- If the language with the id "pl" is selected, "Przykładowy tekst dla pl" will be displayed.
 -- Since no key is set for the id "fr", if "fr" would be the selected language an error message would be displayed saying "LanguageTool: No key was found for the selected language with the key "fr" "
-LanguageTool.Message({
+Message({
     en = "Example text for en",
     de = "Beispieltext für de",
     pl = "Przykładowy tekst dla pl"
@@ -111,7 +111,7 @@ LanguageTool.Message({
 -- If the language with the id "en" is selected, "Example text for en" will be displayed.
 -- If the language with the id "pl" is selected, "Przykładowy tekst dla pl" will be displayed.
 -- If the language with the id "fr" is selected, "Exemple de texte pour fr" will be displayed.
-LanguageTool.Message({
+Message({
     prefix = "@color:0,255,0"
     en = "Example text for en",
     de = "Beispieltext für de",
@@ -120,11 +120,12 @@ LanguageTool.Message({
 })
 ```
 
-As you can see, the original Message-function was not used in the example, but the Message-function of the LanguageTool. Most functions have an equivalent to the LanguageTool, like LanguageTool.Briefing, LanguageTool.Message or LanguageTool.StartCutscene. On one hand, this serves to prevent errors, on the other hand, it also makes it possible to safely overwrite functions such as StartBriefing at any time without coming into conflict with the LanguageTool itself.
+For these effects to take place it is **utterly neccessary** to either call `LanguageTool.Init()` or `LanguageTool.DisplayLanguageSelection`.
+Otherwise you will run (sooner or later) into code errors.
 
 ## Briefings and Cutscenes
 
-Since briefings (cutscenes and such) are a more complex topic, they are presented below in an additional example. The cutscene's text and title work the same way as the example of the briefings text and title does. Suppose we have the following briefing, which we call with the function LanguageTool.StartBriefing:
+Since briefings (cutscenes and such) are a more complex topic, they are presented below in an additional example. The cutscene's text and title work the same way as the example of the briefings text and title does. Suppose we have the following briefing:
 ```
 local briefing = {}
 
@@ -134,7 +135,7 @@ table.insert(briefing, {
     position    = GetPosition("position")
 })
 
-LanguageTool.StartBriefing(briefing)
+StartBriefing(briefing)
 ```
 In this example, all selected languages would display title and text in the same way, so nothing would have changed from the regular StartBriefing. Suppose we want to display a different text for the language "de", "en" and "pl". We would solve this as follows:
 ```
@@ -150,7 +151,7 @@ table.insert(briefing, {
     position    = GetPosition("position")
 })
 
-LanguageTool.StartBriefing(briefing)
+StartBriefing(briefing)
 ```
 In this case, the languages with the id "de", "en" and "pl" would now display different texts. For the language with the id "fr" we would get an error message as a  text. However, all languages would still display the same title: "Totally viable title". For the next step, we therefore want to give the languages "de" and "en" the same title and "pl" a different one:
 ```
@@ -169,12 +170,12 @@ table.insert(briefing, {
     position    = GetPosition("position")
 })
 
-LanguageTool.StartBriefing(briefing)
+StartBriefing(briefing)
 ```
 Now we would have the same title for "de" and "en" (and also "fr") and our own title for "pl".  
 For "de", "en" and "pl" we would therefore have a different text and for "fr" an error message as text.
 
-It is also very important to **replace the call StartBriefing to LanguageTool.StartBriefing before adjusting the briefing pages**. Otherwise you will quickly run into an error that can only be solved by Alt+F4 the game, since the regular StartBriefing can't handle tables for their text and title. The Briefing page would just get stuck and this point.
+It is also very important to **initialise the LanguageTool before adding tables as title and text**. Otherwise you will quickly run into an error that can only be solved by Alt+F4 the game, since the regular StartBriefing can't handle tables for their text and title. The Briefing page would just get stuck at this point.
 
 If we want to create multiple-choice briefings we must replace the firstText and secondText of the mc-table with the same principle:
 ```
@@ -198,20 +199,21 @@ mc   = {
     ...
 ```
 
+The same goes for quests.
 The concept stays the same across all functions that may take text that should be multilingual. Here is the full list of all functions implemented in the LanguageTool currently:
 
-* LanguageTool.Message
-* LanguageTool.StartBriefing
-* LanguageTool.StartCutscene (requires comfort-function)
-* LanguageTool.SetPlayerName
-* LanguageTool.CreateNPC
-* LanguageTool.AddQuest
-* LanguageTool.AddTribute (requires comfort-function)
+* Message
+* StartBriefing
+* StartCutscene (requires comfort-function)
+* SetPlayerName
+* CreateNPC
+* LanguageTool.AddQuest -> A comfort-function to add quests outside of briefing pages.
+* AddTribute (requires comfort-function)
 
 ## Check for missing keys
 
 As in version 2.3, a new functionionality was added: `LanguageTool.EnableLanguageCheck(_flagStrings)` (disabled by default).  
-With this function it is now possible to assist in creating multilingual Briefings, Messages and such. By calling this function, the `GetString` function passively checks, if all languages have a valid key representation within the passed table. If it is not the case, a warning is appended to the string returned by the function, which looks like this: "LanguageTool: No key/(s) was/were found for the id/(s): ...". This warning is not returned, if the `GetString` function is called with a true as its returnInput flag.
+With this function it is now possible to assist in creating multilingual Briefings, Messages and such. By calling this function, the `GetString` function passively checks, if all languages have a valid key representation within the passed table. If it is not the case, a warning is appended to the string returned by the function, which looks like this: "LanguageTool: No key/(s) was/were found for the id/(s): ..."
 
 It is important to mention that this **does not work** as expected, if the **given value is a string**, like the title in this case:
 ```
