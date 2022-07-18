@@ -360,10 +360,10 @@ end
 
 --- Creates the text necessary for display of the language selection
 function LanguageTool:__DisplayText()
-    local moveUp = "@color:255,255,255 (A) UP "
+    local moveUp = "@color:255,255,255 (W) UP "
     local languageList = ""
     local languageTitle = ""
-    local moveDown = "@color:255,255,255 (D) DOWN "
+    local moveDown = "@color:255,255,255 (S) DOWN "
     local select = "(ENTER) Select"
 
     for k, v in pairs(self.languageTable) do
